@@ -37,6 +37,15 @@ puts "Found #{repos.count} repos. Counting..."
 
 reports = []
 repos.each do |repo|
+
+  # skip if the repo is archived
+  next if repo.archived
+
+  # also skip if repo hasn't been updated in the last 2 years
+  start_time = DateTime.strptime(repo.updated_at, '%Y-%m-%dT%H:%M:%SZ')
+  end_time = DateTime.now
+  next if (end_time - start_time) > 2*365
+
   puts "Counting #{repo.name}..."
 
   destination = File.expand_path repo.name, tmp_dir
