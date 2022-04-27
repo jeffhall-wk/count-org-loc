@@ -44,7 +44,7 @@ repos.each do |repo|
   # also skip if repo hasn't been updated in the last 2 years
   start_time = DateTime.strptime(repo.updated_at, '%Y-%m-%dT%H:%M:%SZ')
   end_time = DateTime.now
-  next if (end_time - start_time) > 2*365
+  next if (end_time - start_time) > (2*365)
 
   puts "Counting #{repo.name}..."
 
