@@ -37,6 +37,28 @@ puts "Found #{repos.count} repos. Counting..."
 
 reports = []
 repos.each do |repo|
+
+  # skip if the repo is archived
+  if repo.archived
+    puts "Skipping archived #{repo.name}..."
+    next
+  end
+
+  if repo.name == "bigsky"
+    puts "Skipping #{repo.name}..."
+    next
+  end
+
+  # also skip if repo hasn't been updated in the last a year
+  now = Time.now()
+  print "#{now}\n"
+  print "#{repo.updated_at}\n"
+  print now - repo.updated_at
+  if (now - repo.updated_at) > (365*86400)
+    puts "Skipping old #{repo.name}..."
+    next
+  end
+
   puts "Counting #{repo.name}..."
 
   destination = File.expand_path repo.name, tmp_dir
