@@ -39,12 +39,25 @@ reports = []
 repos.each do |repo|
 
   # skip if the repo is archived
-  next if repo.archived
+  if repo.archived
+    puts "Skipping archived #{repo.name}..."
+    next
+  end
 
-  # also skip if repo hasn't been updated in the last 2 years
-  updated_at = DateTime.strptime(repo.updated_at, '%Y-%m-%dT%H:%M:%SZ')
-  now = DateTime.now
-  next if (now - updated_at) > (2*365)
+  if repo.name == "bigsky"
+    puts "Skipping #{repo.name}..."
+    next
+  end
+
+  # also skip if repo hasn't been updated in the last a year
+  now = Time.now()
+  print "#{now}\n"
+  print "#{repo.updated_at}\n"
+  print now - repo.updated_at
+  if (now - repo.updated_at) > (365*86400)
+    puts "Skipping old #{repo.name}..."
+    next
+  end
 
   puts "Counting #{repo.name}..."
 
